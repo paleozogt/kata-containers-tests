@@ -37,7 +37,7 @@ arch_to_golang()
 
 	case "$arch" in
 		aarch64) echo "arm64";;
-		ppc64le) echo "$arch";;
+		ppc64*) echo "$arch";;
 		x86_64) echo "amd64";;
 		s390x) echo "s390x";;
 		*) die "unsupported architecture: $arch";;
@@ -49,8 +49,8 @@ arch_to_rust()
 {
 	local arch="$1"
 
-	if [ "${arch}" == "ppc64le" ]; then
-		arch="powerpc64le"
+	if [[ "${arch}" == ppc64* ]]; then
+		arch=${arch/ppc/powerpc}
 	fi
 
 	echo "${arch}"
@@ -63,7 +63,7 @@ arch_to_kernel()
 
 	case "$arch" in
 		aarch64) echo "arm64";;
-		ppc64le) echo "powerpc";;
+		ppc64*) echo "powerpc";;
 		x86_64) echo "$arch";;
 		s390x) echo "s390x";;
 		*) die "unsupported architecture: $arch";;
